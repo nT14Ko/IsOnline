@@ -16,21 +16,27 @@ import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.facebook.applinks.AppLinkData;
 
+
 public class MainActivity extends AppCompatActivity {
     SharedPreferences preferences;
+    NoBot noBot;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        noBot = new NoBot();
+        noBot.noBot(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        firstStart();
-        if (preferences.getBoolean("online", false)){
-            Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
-            startActivity(intent);
+        if (preferences.getBoolean("isBot", true)){
+            Toast.makeText(this, "You are bot", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "тут должна быть игра", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You are not bot", Toast.LENGTH_SHORT).show();
         }
+        facebook();
+    }
 
+    private void facebook(){
         FacebookSdk.setAutoInitEnabled(true);
         FacebookSdk.fullyInitialize();
         AppLinkData.fetchDeferredAppLinkData(this,
@@ -50,22 +56,4 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void firstStart(){
-        if (!preferences.getBoolean("started", false)) {
-            preferences.edit().putBoolean("started", true).apply();
-            if (isOnline(this)){
-                preferences.edit().putBoolean("online", true).apply();
-            } else {
-                preferences.edit().putBoolean("online", false).apply();
-            }
-        }
-    }
-
-    public static boolean isOnline(Context context)
-    {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
 }
