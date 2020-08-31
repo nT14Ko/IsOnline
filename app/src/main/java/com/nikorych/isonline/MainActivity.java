@@ -8,8 +8,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.facebook.FacebookSdk;
+import com.facebook.applinks.AppLinkData;
 
 public class MainActivity extends AppCompatActivity {
     SharedPreferences preferences;
@@ -25,6 +30,24 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "тут должна быть игра", Toast.LENGTH_SHORT).show();
         }
+
+        FacebookSdk.setAutoInitEnabled(true);
+        FacebookSdk.fullyInitialize();
+        AppLinkData.fetchDeferredAppLinkData(this,
+                new AppLinkData.CompletionHandler() {
+                    @Override
+                    public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
+                        if(appLinkData != null) {
+                            Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+                            Uri targetUri = appLinkData.getTargetUri();
+                            assert targetUri != null;
+                            intent.putExtra("key", targetUri.toString());
+                            startActivity(intent);
+                            Log.d("Main", "test" + targetUri);
+                        }
+                    }
+                }
+        );
     }
 
     private void firstStart(){
@@ -43,10 +66,6 @@ public class MainActivity extends AppCompatActivity {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting())
-        {
-            return true;
-        }
-        return false;
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
