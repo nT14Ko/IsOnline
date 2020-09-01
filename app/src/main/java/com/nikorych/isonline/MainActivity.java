@@ -36,15 +36,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        noBot = new NoBot();
-        noBot.noBot(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preferences.getBoolean("isBot", true)){
-            Toast.makeText(this, "You are bot", Toast.LENGTH_SHORT).show();
-        } else {
+        if(dropbox().equals("true")){
+            if (preferences.getBoolean("isBot", true)){
+                noBot = new NoBot();
+                noBot.noBot(this);
+            } else if (preferences.getBoolean("isBot", true)){
+                Toast.makeText(this, "You are bot", Toast.LENGTH_SHORT).show();
+            } else {
 //            Intent intent = new Intent(this, WebViewActivity.class);
 //            startActivity(intent);
-            Toast.makeText(this, dropbox(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You are not bot", Toast.LENGTH_SHORT).show();
+        }
+
         }
         facebook();
     }
