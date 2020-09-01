@@ -3,11 +3,9 @@ package com.nikorych.isonline;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +14,17 @@ import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.applinks.AppLinkData;
+import com.onesignal.OneSignal;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,14 +38,23 @@ import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
-    SharedPreferences preferences;
+    SharedPreferences preferencs;
     NoBot noBot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init();
+
         setContentView(R.layout.activity_main);
+        noBot = new NoBot();
+        noBot.noBot(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         if(dropbox().equals("true")){
             if (preferences.getBoolean("isBot", true)){
                 noBot = new NoBot();
@@ -47,10 +65,10 @@ public class MainActivity extends AppCompatActivity {
 //            Intent intent = new Intent(this, WebViewActivity.class);
 //            startActivity(intent);
                 Toast.makeText(this, "You are not bot", Toast.LENGTH_SHORT).show();
-        }
 
         }
         facebook();
+        OneSignal.sendTag("key", "1");
     }
 
     private void facebook(){

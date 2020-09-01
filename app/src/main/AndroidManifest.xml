@@ -17,6 +17,9 @@
         <activity android:name=".WebViewActivity"
             android:configChanges="orientation|screenSize"/>
         <meta-data
+            android:name="com.onesignal.NotificationOpened.DEFAULT"
+            android:value="DISABLE" />
+        <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
         <activity android:name=".MainActivity">
