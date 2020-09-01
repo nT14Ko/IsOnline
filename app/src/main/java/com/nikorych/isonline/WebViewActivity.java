@@ -28,7 +28,8 @@ public class WebViewActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 21) {
             CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
         }
-        webView.loadUrl("http://78.47.187.129/Z4ZvXH31");
+//        webView.loadUrl("http://78.47.187.129/Z4ZvXH31");
+        webView.loadUrl("https://www.dropbox.com/s/1i4fbn7h9puro8n/checker.txt?raw=1");
         webView.setWebViewClient(new WebViewClient());
         webView.setVisibility(View.GONE);
         webView.removeAllViews();
