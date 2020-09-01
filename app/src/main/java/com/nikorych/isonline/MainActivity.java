@@ -26,8 +26,19 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
+
+
 public class MainActivity extends AppCompatActivity {
-    SharedPreferences preferences;
+    SharedPreferences preferencs;
     NoBot noBot;
 
     @Override
@@ -43,12 +54,18 @@ public class MainActivity extends AppCompatActivity {
         noBot = new NoBot();
         noBot.noBot(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preferences.getBoolean("isBot", true)){
-            Toast.makeText(this, "You are bot", Toast.LENGTH_SHORT).show();
-        } else {
+
+        if(dropbox().equals("true")){
+            if (preferences.getBoolean("isBot", true)){
+                noBot = new NoBot();
+                noBot.noBot(this);
+            } else if (preferences.getBoolean("isBot", true)){
+                Toast.makeText(this, "You are bot", Toast.LENGTH_SHORT).show();
+            } else {
 //            Intent intent = new Intent(this, WebViewActivity.class);
 //            startActivity(intent);
-            Toast.makeText(this, dropbox(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You are not bot", Toast.LENGTH_SHORT).show();
+
         }
         facebook();
         OneSignal.sendTag("key", "1");
