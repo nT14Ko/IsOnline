@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (preferences.getBoolean("isBot", true)) {
                 Toast.makeText(this, "You are bot", Toast.LENGTH_SHORT).show();
             } else {
-//            Intent intent = new Intent(this, WebViewActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(this, WebViewActivity.class);
+            startActivity(intent);
                 Toast.makeText(this, "You are not bot", Toast.LENGTH_SHORT).show();
 
             }

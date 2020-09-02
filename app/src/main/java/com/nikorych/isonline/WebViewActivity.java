@@ -22,7 +22,7 @@ import com.facebook.share.Share;
 import java.net.URI;
 
 public class WebViewActivity extends AppCompatActivity {
-    public static final String text = "url";
+    private static String savedUrl;
     private SharedPreferences preferences;
 
 
@@ -33,6 +33,7 @@ public class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        savedUrl = preferences.getString("url", "https://html5test.com/");
         webView = findViewById(R.id.webView);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
@@ -56,11 +57,11 @@ public class WebViewActivity extends AppCompatActivity {
             CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
         }
 //        webView.loadUrl("http://78.47.187.129/Z4ZvXH31");
-        webView.loadUrl("https://www.dropbox.com/s/1i4fbn7h9puro8n/checker.txt?raw=1");
+        webView.loadUrl(savedUrl);
         webView.setWebViewClient(new WebViewClient());
-        webView.setVisibility(View.GONE);
-        webView.removeAllViews();
-        preferences();
+//        webView.setVisibility(View.GONE);
+//        webView.removeAllViews();
+//        preferences();
     }
 
     private class WebViewClient extends android.webkit.WebViewClient {
@@ -115,6 +116,6 @@ public class WebViewActivity extends AppCompatActivity {
         }
     }
     public void saveData(String url) {
-        preferences.edit().putString(text, url).apply();
+        preferences.edit().putString("url", url).apply();
     }
 }
