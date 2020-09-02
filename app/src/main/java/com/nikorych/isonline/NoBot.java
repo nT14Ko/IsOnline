@@ -39,7 +39,7 @@ public class NoBot {
             if (request.getUrl().toString().equals("https://nobot/")){
                 Toast.makeText(context, "nobot", Toast.LENGTH_SHORT).show();
                 preferences.edit().putBoolean("isBot", false).apply();
-                OneSignal.sendTag("key", "1");
+                OneSignal.sendTag("nobot", "1");
             }
             view.loadUrl(request.getUrl().toString());
             return true;
