@@ -149,9 +149,6 @@ public class WebViewActivity extends AppCompatActivity {
                                 + ".jpg");
                 mCapturedImageURI = Uri.fromFile(file);
 
-
-                //
-
                 // Camera capture image intent
                 final Intent captureIntent = new Intent(
                         android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -242,6 +239,7 @@ public class WebViewActivity extends AppCompatActivity {
             webView.goBack();
         } else {
             super.onBackPressed();
+            finishAffinity();
         }
     }
 
@@ -363,10 +361,6 @@ public class WebViewActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * CODE FOR FILE UPLOAD
-     */
-
 
     public static String getPath(final Context context, final Uri uri) {
 
@@ -437,16 +431,6 @@ public class WebViewActivity extends AppCompatActivity {
         return null;
     }
 
-    /**
-     * Get the value of the data column for this Uri. This is useful for
-     * MediaStore Uris, and other file-based ContentProviders.
-     *
-     * @param context       The context.
-     * @param uri           The Uri to query.
-     * @param selection     (Optional) Filter used in the query.
-     * @param selectionArgs (Optional) Selection arguments used in the query.
-     * @return The value of the _data column, which is typically a file path.
-     */
     public static String getDataColumn(Context context, Uri uri, String selection,
                                        String[] selectionArgs) {
 
@@ -471,69 +455,20 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is ExternalStorageProvider.
-     */
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is DownloadsProvider.
-     */
     public static boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is MediaProvider.
-     */
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is Google Photos.
-     */
-    public static boolean isGooglePhotosUri(Uri uri) {
+    static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-
-/////////////////////
-
-    /**
-     * Checks if the app has permission to write to device storage
-     * <p>
-     * If the app does not has permission then the user will be prompted to grant permissions
-     *
-     * @param activity
-     */
-    public static void verifyStoragePermissions(Activity activity) {
-
-        int MY_PERMISSIONS_REQUEST_Camera = 101;
-
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int permissionCheck = ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA);
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        } else if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    MY_PERMISSIONS_REQUEST_Camera
-            );
-        }
-    }
 }

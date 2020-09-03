@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
                 Toast.makeText(this, "You are not bot", Toast.LENGTH_SHORT).show();
-
             }
             facebook();
         }}
