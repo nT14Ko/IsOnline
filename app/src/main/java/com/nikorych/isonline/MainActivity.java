@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,12 +27,14 @@ import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
-    SharedPreferences preferences;
-    NoBot noBot;
+    private ProgressBar progressBarLoading;
+    private SharedPreferences preferences;
+    private NoBot noBot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        progressBarLoading = findViewById(R.id.progressBarLoading);
 
         OneSignal.startInit(this)
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
