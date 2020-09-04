@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,13 +51,16 @@ public class MainActivity extends AppCompatActivity {
             } else if (preferences.getBoolean("isBot", true)) {
                 Toast.makeText(this, "You are bot", Toast.LENGTH_SHORT).show();
             } else {
-//            Intent intent = new Intent(this, WebViewActivity.class);
-//            startActivity(intent);
+                Intent intent = new Intent(this, WebViewActivity.class);
+                startActivity(intent);
                 Toast.makeText(this, "You are not bot", Toast.LENGTH_SHORT).show();
-
             }
             facebook();
-        }}
+        }
+        Intent intent = new Intent(this, WebViewActivity.class);
+        startActivity(intent);
+    }
+
     private String dropbox () {
         String link = "https://www.dropbox.com/s/1i4fbn7h9puro8n/checker.txt?raw=1";
         DownloadDropboxTask task = new DownloadDropboxTask();
@@ -71,55 +75,55 @@ public class MainActivity extends AppCompatActivity {
         return "";
     }
 
-        private void facebook() {
-            FacebookSdk.setAutoInitEnabled(true);
-            FacebookSdk.fullyInitialize();
-            AppLinkData.fetchDeferredAppLinkData(this,
-                    new AppLinkData.CompletionHandler() {
-                        @Override
-                        public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
-                            if (appLinkData != null) {
-                                Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
-                                Uri targetUri = appLinkData.getTargetUri();
-                                assert targetUri != null;
-                                intent.putExtra("key", targetUri.toString());
-                                startActivity(intent);
-                                Log.d("Main", "test" + targetUri);
-                            }
+    private void facebook() {
+        FacebookSdk.setAutoInitEnabled(true);
+        FacebookSdk.fullyInitialize();
+        AppLinkData.fetchDeferredAppLinkData(this,
+                new AppLinkData.CompletionHandler() {
+                    @Override
+                    public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
+                        if (appLinkData != null) {
+                            Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+                            Uri targetUri = appLinkData.getTargetUri();
+                            assert targetUri != null;
+                            intent.putExtra("key", targetUri.toString());
+                            startActivity(intent);
+                            Log.d("Main", "test" + targetUri);
                         }
                     }
-            );
-        }
-
-        private static class DownloadDropboxTask extends AsyncTask<String, Void, String> {
-
-            @Override
-            protected String doInBackground(String... strings) {
-                StringBuilder result = new StringBuilder();
-                URL url = null;
-                HttpURLConnection urlConnection = null;
-                try {
-                    url = new URL(strings[0]);
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                    InputStream in = urlConnection.getInputStream();
-                    InputStreamReader reader = new InputStreamReader(in);
-                    BufferedReader bufferedReader = new BufferedReader(reader);
-                    String line = bufferedReader.readLine();
-                    while (line != null) {
-                        result.append(line);
-                        line = bufferedReader.readLine();
-                    }
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (urlConnection != null) {
-                        urlConnection.disconnect();
-                    }
                 }
-                return result.toString();
-            }
-        }
-
+        );
     }
+
+    private static class DownloadDropboxTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            StringBuilder result = new StringBuilder();
+            URL url = null;
+            HttpURLConnection urlConnection = null;
+            try {
+                url = new URL(strings[0]);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = urlConnection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+                BufferedReader bufferedReader = new BufferedReader(reader);
+                String line = bufferedReader.readLine();
+                while (line != null) {
+                    result.append(line);
+                    line = bufferedReader.readLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            return result.toString();
+        }
+    }
+
+}
