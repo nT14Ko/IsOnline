@@ -63,16 +63,10 @@ public class WebViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
-        //mProgressBar = findViewById(R.id.mProgressBar);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         savedUrl = preferences.getString("url", "https://html5test.com/");
         webView = findViewById(R.id.webView);
         webView.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int progress) {
-                if (progress == 100) {
-                    //mProgressBar.setVisibility(View.GONE);
-                }
-            }
 
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback,
                                              WebChromeClient.FileChooserParams fileChooserParams) {
@@ -410,7 +404,6 @@ public class WebViewActivity extends AppCompatActivity {
         }
         return null;
     }
-
 
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());

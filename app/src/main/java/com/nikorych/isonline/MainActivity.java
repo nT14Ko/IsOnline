@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,12 +28,14 @@ import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
-    SharedPreferences preferences;
-    NoBot noBot;
+    private ProgressBar progressBarLoading;
+    private SharedPreferences preferences;
+    private NoBot noBot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        progressBarLoading = findViewById(R.id.progressBarLoading);
 
         OneSignal.startInit(this)
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
@@ -49,11 +52,10 @@ public class MainActivity extends AppCompatActivity {
                 noBot = new NoBot();
                 noBot.noBot(this);
             } else if (preferences.getBoolean("isBot", true)) {
-                Toast.makeText(this, "You are bot", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "You are bot", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(this, WebViewActivity.class);
                 startActivity(intent);
-                Toast.makeText(this, "You are not bot", Toast.LENGTH_SHORT).show();
             }
             facebook();
         }
